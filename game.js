@@ -42,7 +42,7 @@ const STRINGS = {
 
     hutLabel: roomId => `Hut ${roomId + 1}`,
     phaseInvestigate: "Divination",
-    phaseSearching: "Searching",
+    phaseSearching: "Hunting",
     phaseGameOver: "Game Over",
     selectedFraction: (selected, allowed) => `${selected} / ${allowed}`,
     selectedFractionDash: allowed => `— / ${allowed}`,
@@ -54,7 +54,7 @@ const STRINGS = {
     confirmSearchBtnLabel: "Confirm Search →",
     continueBtnLabel: "Continue",
     roundRecapHeading: round => `Round ${round} Recap`,
-    viewFullLogBtnLabel: "📜 View Full Event Log",
+    viewFullLogBtnLabel: "View Full Event Log",
     closeBtnLabel: "Close",
 
     resultWinTitle: "You Win!",
@@ -106,7 +106,11 @@ const STRINGS = {
     trapTooltip: "Trap",
     gnomeTooltip: letter => `Gnome ${letter}`,
     legendNormalGnome: "Gnome",
-    legendGhostedGnome: "Invisible this round",
+    legendCloakGhostedNote: "(dotted line when used invisibility this round)",
+    legendBorderInvestigated: "Investigated this round",
+    legendBorderSearchedHiders: "Searched — Gnome(s) found",
+    legendBorderSearchedTrap: "Searched — Trap triggered",
+    legendBorderSearchedEmpty: "Searched — empty",
   },
   zh: {
     docTitle: "巫師的狩獵",
@@ -142,7 +146,7 @@ const STRINGS = {
 
     hutLabel: roomId => `小屋 ${roomId + 1}`,
     phaseInvestigate: "占卜",
-    phaseSearching: "搜查中",
+    phaseSearching: "狩獵中",
     phaseGameOver: "遊戲結束",
     selectedFraction: (selected, allowed) => `${selected} / ${allowed}`,
     selectedFractionDash: allowed => `— / ${allowed}`,
@@ -154,7 +158,7 @@ const STRINGS = {
     confirmSearchBtnLabel: "確認搜查 →",
     continueBtnLabel: "繼續",
     roundRecapHeading: round => `第${round}回合總結`,
-    viewFullLogBtnLabel: "📜 查看完整紀錄",
+    viewFullLogBtnLabel: "查看完整紀錄",
     closeBtnLabel: "關閉",
 
     resultWinTitle: "你獲勝了！",
@@ -206,7 +210,11 @@ const STRINGS = {
     trapTooltip: "陷阱",
     gnomeTooltip: letter => `地精${letter}`,
     legendNormalGnome: "地精",
-    legendGhostedGnome: "本回合隱身中",
+    legendCloakGhostedNote: "（本回合使用隱身能力時會顯示虛線外框）",
+    legendBorderInvestigated: "本回合占卜過",
+    legendBorderSearchedHiders: "搜查過——抓到地精",
+    legendBorderSearchedTrap: "搜查過——觸發陷阱",
+    legendBorderSearchedEmpty: "搜查過——空無一物",
   },
 };
 
@@ -962,10 +970,13 @@ function renderRoundLegend() {
     legend.appendChild(item);
   };
   addItem('<span class="tile-dot dot-normal"></span>', t("legendNormalGnome"));
-  addItem('<span class="tile-dot dot-invisible"></span>', t("itemHolderCloak"));
+  addItem('<span class="tile-dot dot-invisible"></span>', `${t("itemHolderCloak")} ${t("legendCloakGhostedNote")}`);
   addItem('<span class="tile-dot dot-transfer"></span>', t("itemHolderTransfer"));
-  addItem('<span class="tile-dot dot-invisible ghosted"></span>', t("legendGhostedGnome"));
   addItem('<span class="tile-trap">💣</span>', t("trapTooltip"));
+  addItem('<span class="legend-swatch investigated"></span>', t("legendBorderInvestigated"));
+  addItem('<span class="legend-swatch searched-hiders"></span>', t("legendBorderSearchedHiders"));
+  addItem('<span class="legend-swatch searched-trap"></span>', t("legendBorderSearchedTrap"));
+  addItem('<span class="legend-swatch searched-empty"></span>', t("legendBorderSearchedEmpty"));
 }
 
 /* ---------- Mobile round recap ---------- */
@@ -1007,7 +1018,7 @@ function render() {
   hearts.innerHTML = "";
   for (let i = 0; i < 6; i++) {
     const span = document.createElement("span");
-    span.textContent = "❤";
+    span.textContent = "♥";
     if (i >= Math.max(0, s.catcherHP)) span.classList.add("lost");
     hearts.appendChild(span);
   }
@@ -1042,11 +1053,6 @@ function render() {
     name.className = "room-name";
     name.textContent = t("hutLabel", room.id);
     el.appendChild(name);
-
-    const tag = document.createElement("div");
-    tag.className = "room-tag";
-    tag.textContent = "";
-    el.appendChild(tag);
 
     el.addEventListener("click", () => toggleRoomClick(room.id));
     grid.appendChild(el);
@@ -1111,6 +1117,10 @@ function render() {
   const modal = document.getElementById("game-over-modal");
   if (s.gameOver) {
     modal.classList.remove("hidden");
+    // Reset scroll to the top so the Win/Lose headline is the first thing
+    // the player sees, instead of wherever the previous reveal was scrolled to.
+    const modalContent = document.getElementById("game-over-content");
+    if (modalContent) modalContent.scrollTop = 0;
     const title = document.getElementById("result-title");
     const text = document.getElementById("result-text");
     if (s.result === "win") {
