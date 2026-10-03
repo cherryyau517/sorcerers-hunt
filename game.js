@@ -54,6 +54,8 @@ const STRINGS = {
     confirmSearchBtnLabel: "Confirm Search →",
     continueBtnLabel: "Continue",
     roundRecapHeading: round => `Round ${round} Recap`,
+    viewFullLogBtnLabel: "📜 View Full Event Log",
+    closeBtnLabel: "Close",
 
     resultWinTitle: "You Win!",
     resultWinText: hp => `You found all 6 Gnomes with ${hp} HP to spare.`,
@@ -159,6 +161,8 @@ const STRINGS = {
     confirmSearchBtnLabel: "確認搜查 →",
     continueBtnLabel: "繼續",
     roundRecapHeading: round => `第${round}回合總結`,
+    viewFullLogBtnLabel: "📜 查看完整紀錄",
+    closeBtnLabel: "關閉",
 
     resultWinTitle: "你獲勝了！",
     resultWinText: hp => `你抓到了全部6隻地精，還剩下${hp}點生命值。`,
@@ -1098,6 +1102,20 @@ function render() {
     });
   }
 
+  // Mobile-only full log, opened on demand via the "View Full Event Log"
+  // button so the player can still deduce from earlier rounds without the
+  // full always-on log panel taking up space on a one-page mobile layout.
+  const mobileLogFull = document.getElementById("mobile-log-full-list");
+  if (mobileLogFull) {
+    mobileLogFull.innerHTML = "";
+    reversedLog.forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = t(entry.key, ...entry.args);
+      if (entry.cls) li.classList.add(entry.cls);
+      mobileLogFull.appendChild(li);
+    });
+  }
+
   const banner = document.getElementById("banner");
   banner.classList.add("hidden");
 
@@ -1145,6 +1163,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("search-confirm-btn").addEventListener("click", doConfirmSearch);
   document.getElementById("round-recap-continue-btn").addEventListener("click", () => {
     document.getElementById("round-recap-modal").classList.add("hidden");
+  });
+  document.getElementById("view-full-log-btn").addEventListener("click", () => {
+    document.getElementById("mobile-log-modal").classList.remove("hidden");
+  });
+  document.getElementById("mobile-log-close-btn").addEventListener("click", () => {
+    document.getElementById("mobile-log-modal").classList.add("hidden");
   });
   document.getElementById("new-game-btn").addEventListener("click", newGame);
   document.getElementById("reveal-prev-btn").addEventListener("click", () => {
