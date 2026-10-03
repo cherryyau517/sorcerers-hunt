@@ -172,7 +172,6 @@ main {
 
 .room:hover {
   transform: translateY(-3px);
-  border-color: #8a6ad6;
 }
 
 .room .room-name {
@@ -339,17 +338,7 @@ main {
 
 .mobile-log-btn {
   display: none;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.18);
-  color: #aee0c2;
-  font-size: 0.7rem;
-  padding: 4px 10px;
-  border-radius: 999px;
-  cursor: pointer;
-  margin: 0 0 8px;
 }
-
-.mobile-log-btn:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
 
 .mobile-log-modal-content { max-width: 480px; }
 .mobile-log-modal-content h3:first-child { margin-top: 0; }
@@ -456,6 +445,32 @@ main {
 }
 
 .round-viewer-nav .action-btn:disabled { opacity: 0.3; }
+
+.round-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 0.75rem;
+  color: #d9f3e0;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-item .tile-dot {
+  width: 11px;
+  height: 11px;
+}
+
+.legend-item .tile-trap {
+  font-size: 0.85rem;
+  line-height: 1;
+}
 
 .round-viewer-body {
   display: grid;
@@ -592,7 +607,7 @@ main {
   main { grid-template-columns: 1fr; }
   #log-panel { display: none; }
   .mobile-log-mini { display: flex; }
-  .mobile-log-btn { display: inline-block; }
+  .mobile-log-btn { display: block; margin: 0 auto 10px; }
   #rooms-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
   .room { min-height: 58px; padding: 6px 3px; gap: 3px; }
   .room .room-name { font-size: 0.74rem; }
