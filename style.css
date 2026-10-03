@@ -3,7 +3,20 @@
 body {
   margin: 0;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: radial-gradient(ellipse at top, #1d3a2c 0%, #0f2419 60%, #081510 100%);
+  background-color: #050e09;
+  /* Layer order matters: the first background-image listed paints ON TOP.
+     Tree silhouettes must come before the ambient gradient, otherwise the
+     opaque gradient covers them completely and no trees are visible. The
+     gradient is lightened through its lower-middle band so the near-black
+     tree shapes actually read as silhouettes instead of blending away. */
+  background-image:
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='220'%20height='260'%3E%3Cg%20fill='%23030a06'%20fill-opacity='0.92'%3E%3Cpolygon%20points='110,15%2045,110%20175,110'/%3E%3Cpolygon%20points='110,60%2035,165%20185,165'/%3E%3Cpolygon%20points='110,115%2025,230%20195,230'/%3E%3Crect%20x='98'%20y='222'%20width='24'%20height='38'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='200'%3E%3Cg%20fill='%230a2015'%20fill-opacity='0.55'%3E%3Cpolygon%20points='80,10%2030,90%20130,90'/%3E%3Cpolygon%20points='80,45%2025,135%20135,135'/%3E%3Crect%20x='70'%20y='128'%20width='20'%20height='30'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(ellipse at top, #28503f 0%, #19382a 40%, #10271a 68%, #081a11 88%, #050e09 100%);
+  background-repeat: repeat-x, repeat-x, no-repeat;
+  background-position: bottom left, bottom -40px center, top center;
+  background-size: 220px 260px, 160px 200px, 100% 100%;
+  background-attachment: fixed, fixed, fixed;
   color: #eaf5ea;
   min-height: 100vh;
 }
@@ -59,13 +72,28 @@ header .subtitle {
   transition: background 0.12s, color 0.12s, transform 0.1s;
 }
 
-.lang-btn:hover { color: #fff; transform: translateY(-1px); }
+.lang-btn:hover { color: #e4e8e6; transform: translateY(-1px); }
+
+/* Settings-type controls (language, how-to-play) are muted grey on purpose —
+   they're not gameplay actions, so they shouldn't compete for attention. */
+.lang-btn {
+  color: #8a948f;
+}
 
 .lang-btn.active {
-  background: linear-gradient(135deg, #ffb648, #ff8a3d);
-  color: #231200;
-  box-shadow: 0 2px 8px rgba(255,138,61,0.35);
+  background: linear-gradient(135deg, #7a8580, #5c6662);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
+
+#help-btn {
+  background: rgba(255,255,255,0.05);
+  color: #8a948f;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: none;
+}
+
+#help-btn:hover { color: #c3cac7; }
 
 .lang-toggle-intro {
   display: flex;
@@ -116,8 +144,8 @@ header .subtitle {
   color: #fff;
 }
 
-.hearts { font-size: 1.2rem; letter-spacing: 2px; }
-.hearts .lost { opacity: 0.25; filter: grayscale(1); }
+.hearts { font-size: 1.2rem; letter-spacing: 2px; color: #ffffff; }
+.hearts .lost { opacity: 0.25; }
 
 .banner {
   text-align: center;
@@ -154,42 +182,40 @@ main {
   gap: 14px;
 }
 
+/* Each hut tile is a pure-CSS gnome hut: clip-path carves a house silhouette
+   (pointed roof + walls), and a hard-stop gradient colors the roof portion
+   separately from the wall portion so the two read as distinct shapes. */
 .room {
-  background: #16291d;
-  border: 2px solid #30563c;
-  border-radius: 12px;
-  padding: 14px 8px;
+  background: linear-gradient(to bottom, #7a4a2e 0%, #7a4a2e 34%, #2a4a36 34%, #1c3526 100%);
+  clip-path: polygon(50% 0%, 100% 32%, 100% 100%, 0% 100%, 0% 32%);
+  padding: 0 8px 14px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.12s, border-color 0.12s, background 0.12s;
+  transition: transform 0.12s, filter 0.12s;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
   position: relative;
-  min-height: 110px;
+  min-height: 120px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 6px;
 }
 
 .room:hover {
   transform: translateY(-3px);
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,0.55));
 }
 
 .room .room-name {
   font-weight: 700;
   font-size: 1.05rem;
   color: #ffe9c2;
-}
-
-.room .room-tag {
-  font-size: 0.72rem;
-  color: #9fd4ad;
-  min-height: 1em;
+  padding-bottom: 8px;
 }
 
 .room.selected {
-  border-color: #ffb648;
-  background: #3a2a1a;
-  box-shadow: 0 0 0 2px rgba(255,182,72,0.4);
+  background: linear-gradient(to bottom, #a56a3e 0%, #a56a3e 34%, #3a2a1a 34%, #2e2113 100%);
+  filter: drop-shadow(0 0 8px rgba(255,182,72,0.65));
 }
 
 #controls {
@@ -213,6 +239,14 @@ main {
 
 .action-btn:hover { transform: translateY(-2px); }
 .action-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Confirm Search is a committing, HP-risking action distinct from the
+   Divination button, so it gets a deliberately different, warning-toned color. */
+#search-confirm-btn {
+  background: linear-gradient(135deg, #8a1f1f, #5c1414);
+  color: #ffe9e9;
+  box-shadow: 0 4px 14px rgba(138,31,31,0.4);
+}
 
 #log-panel {
   background: rgba(255,255,255,0.04);
@@ -338,6 +372,12 @@ main {
 
 .mobile-log-btn {
   display: none;
+}
+
+#view-full-log-btn {
+  background: linear-gradient(135deg, #3fae5c, #2f7a4f);
+  color: #eafaf0;
+  box-shadow: 0 4px 14px rgba(63,174,92,0.35);
 }
 
 .mobile-log-modal-content { max-width: 480px; }
@@ -470,6 +510,30 @@ main {
 .legend-item .tile-trap {
   font-size: 0.85rem;
   line-height: 1;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: #16291d;
+  display: inline-block;
+}
+
+.legend-swatch.investigated {
+  border: 2px dashed #8a6ad6;
+}
+
+.legend-swatch.searched-hiders {
+  border: 2px solid #58c46a;
+}
+
+.legend-swatch.searched-trap {
+  border: 2px solid #e0543c;
+}
+
+.legend-swatch.searched-empty {
+  border: 2px solid #9aa39d;
 }
 
 .round-viewer-body {
@@ -609,7 +673,7 @@ main {
   .mobile-log-mini { display: flex; }
   .mobile-log-btn { display: block; margin: 0 auto 10px; }
   #rooms-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
-  .room { min-height: 58px; padding: 6px 3px; gap: 3px; }
+  .room { min-height: 64px; padding: 0 3px 6px; gap: 3px; }
   .room .room-name { font-size: 0.74rem; }
   header h1 { font-size: 1.25rem; }
   header .subtitle { font-size: 0.7rem; }
