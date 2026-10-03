@@ -49,8 +49,11 @@ const STRINGS = {
     caughtFraction: caught => `${caught} / 6`,
 
     instructionsInvestigate: allowed => `Select up to ${allowed} hut${allowed === 1 ? "" : "s"} to investigate together, then peer into your crystal ball for their combined total.`,
-    instructionsSearchNone: "No divinations remain this round — choose a hut to search using your remaining HP.",
-    instructionsSearch: "Choose one hut to search.",
+    instructionsSearchNone: "No divinations remain this round — select a hut, then confirm to search it with your remaining HP.",
+    instructionsSearch: "Select a hut to search, then confirm.",
+    confirmSearchBtnLabel: "Confirm Search →",
+    continueBtnLabel: "Continue",
+    roundRecapHeading: round => `Round ${round} Recap`,
 
     resultWinTitle: "You Win!",
     resultWinText: hp => `You found all 6 Gnomes with ${hp} HP to spare.`,
@@ -151,8 +154,11 @@ const STRINGS = {
     caughtFraction: caught => `${caught} / 6`,
 
     instructionsInvestigate: allowed => `選擇最多${allowed}間小屋一起占卜，接著凝視水晶球得知牠們的合計結果。`,
-    instructionsSearchNone: "本回合沒有占卜機會了——請選擇一間小屋，用剩餘的生命值進行搜查。",
-    instructionsSearch: "請選擇一間小屋進行搜查。",
+    instructionsSearchNone: "本回合沒有占卜機會了——請選擇一間小屋，然後確認以使用剩餘生命值進行搜查。",
+    instructionsSearch: "請選擇一間小屋進行搜查，然後確認。",
+    confirmSearchBtnLabel: "確認搜查 →",
+    continueBtnLabel: "繼續",
+    roundRecapHeading: round => `第${round}回合總結`,
 
     resultWinTitle: "你獲勝了！",
     resultWinText: hp => `你抓到了全部6隻地精，還剩下${hp}點生命值。`,
@@ -628,7 +634,7 @@ function optimizeDistribution(rng, numCandidates) {
 let gameState = null;
 
 function addLog(key, args, cls) {
-  gameState.__log.push({ key, args: args || [], cls: cls || "" });
+  gameState.__log.push({ key, args: args || [], cls: cls || "", round: gameState.round });
 }
 
 function logInvestigation(state, roomIds, sum) {
@@ -683,9 +689,14 @@ function toggleRoomClick(roomId) {
     }
     render();
   } else if (gameState.phase === "catch") {
-    const roomIds = [roomId];
-    void roomIds;
-    doSearch(roomId);
+    // Selecting a hut to search no longer searches immediately — the player
+    // must press Confirm Search, so a stray tap can't cost HP by accident.
+    if (gameState.selected.has(roomId)) {
+      gameState.selected = new Set();
+    } else {
+      gameState.selected = new Set([roomId]);
+    }
+    render();
   }
 }
 
@@ -696,12 +707,23 @@ function doReveal() {
   render();
 }
 
+function doConfirmSearch() {
+  if (!gameState || gameState.phase !== "catch" || gameState.selected.size !== 1) return;
+  const roomId = [...gameState.selected][0];
+  gameState.selected = new Set();
+  doSearch(roomId);
+}
+
 function doSearch(roomId) {
+  const completedRound = gameState.round;
   applySearch(gameState, roomId, logSearch);
   if (!gameState.gameOver) {
     addLog("logRoundBegins", [gameState.round], "round-sep");
   }
   render();
+  if (!gameState.gameOver && isMobileView()) {
+    showRoundRecap(completedRound);
+  }
 }
 
 /* ---------- End-of-game reveal ---------- */
@@ -953,6 +975,36 @@ function renderRoundPage(snapshots, idx) {
   }
 }
 
+/* ---------- Mobile round recap ---------- */
+
+// Keep this breakpoint in sync with the "mobile" media query in style.css.
+const MOBILE_BREAKPOINT_QUERY = "(max-width: 860px)";
+
+function isMobileView() {
+  return typeof window !== "undefined" && typeof window.matchMedia === "function"
+    ? window.matchMedia(MOBILE_BREAKPOINT_QUERY).matches
+    : false;
+}
+
+function showRoundRecap(round) {
+  const modal = document.getElementById("round-recap-modal");
+  const heading = document.getElementById("round-recap-heading");
+  const list = document.getElementById("round-recap-list");
+  if (!modal || !heading || !list) return;
+
+  heading.textContent = t("roundRecapHeading", round);
+  list.innerHTML = "";
+  gameState.__log
+    .filter(entry => entry.round === round && entry.key !== "logRoundBegins" && entry.key !== "logNewGame")
+    .forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = t(entry.key, ...entry.args);
+      if (entry.cls) li.classList.add(entry.cls);
+      list.appendChild(li);
+    });
+  modal.classList.remove("hidden");
+}
+
 /* ---------- Rendering ---------- */
 
 function render() {
@@ -991,7 +1043,7 @@ function render() {
   s.rooms.forEach(room => {
     const el = document.createElement("div");
     el.className = "room";
-    if (s.phase === "investigate" && s.selected.has(room.id)) el.classList.add("selected");
+    if ((s.phase === "investigate" || s.phase === "catch") && s.selected.has(room.id)) el.classList.add("selected");
 
     const name = document.createElement("div");
     name.className = "room-name";
@@ -1008,22 +1060,43 @@ function render() {
   });
 
   const revealBtn = document.getElementById("reveal-btn");
+  const searchConfirmBtn = document.getElementById("search-confirm-btn");
   if (s.phase === "investigate") {
     revealBtn.classList.remove("hidden");
     revealBtn.disabled = s.selected.size === 0;
+    searchConfirmBtn.classList.add("hidden");
+  } else if (s.phase === "catch") {
+    revealBtn.classList.add("hidden");
+    searchConfirmBtn.classList.remove("hidden");
+    searchConfirmBtn.disabled = s.selected.size !== 1;
   } else {
     revealBtn.classList.add("hidden");
+    searchConfirmBtn.classList.add("hidden");
   }
 
+  // Newest events first, so the player always sees the latest result without scrolling.
   const logList = document.getElementById("log-list");
   logList.innerHTML = "";
-  s.__log.forEach(entry => {
+  const reversedLog = s.__log.slice().reverse();
+  reversedLog.forEach(entry => {
     const li = document.createElement("li");
     li.textContent = t(entry.key, ...entry.args);
     if (entry.cls) li.classList.add(entry.cls);
     logList.appendChild(li);
   });
-  logList.scrollTop = logList.scrollHeight;
+  logList.scrollTop = 0;
+
+  // Mobile-only compact strip showing just the latest 3 entries.
+  const mobileLogMini = document.getElementById("mobile-log-mini");
+  if (mobileLogMini) {
+    mobileLogMini.innerHTML = "";
+    reversedLog.slice(0, 3).forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = t(entry.key, ...entry.args);
+      if (entry.cls) li.classList.add(entry.cls);
+      mobileLogMini.appendChild(li);
+    });
+  }
 
   const banner = document.getElementById("banner");
   banner.classList.add("hidden");
@@ -1069,6 +1142,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("reveal-btn").addEventListener("click", doReveal);
+  document.getElementById("search-confirm-btn").addEventListener("click", doConfirmSearch);
+  document.getElementById("round-recap-continue-btn").addEventListener("click", () => {
+    document.getElementById("round-recap-modal").classList.add("hidden");
+  });
   document.getElementById("new-game-btn").addEventListener("click", newGame);
   document.getElementById("reveal-prev-btn").addEventListener("click", () => {
     if (revealRoundIndex > 0) {
