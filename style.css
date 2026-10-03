@@ -184,11 +184,12 @@ main {
 
 /* Each hut tile is a pure-CSS gnome hut: clip-path carves a house silhouette
    (pointed roof + walls), and a hard-stop gradient colors the roof portion
-   separately from the wall portion so the two read as distinct shapes. */
+   separately from the wall portion so the two read as distinct shapes. A
+   rounded-top door element gives the hut a lived-in, storybook look. */
 .room {
-  background: linear-gradient(to bottom, #7a4a2e 0%, #7a4a2e 34%, #2a4a36 34%, #1c3526 100%);
-  clip-path: polygon(50% 0%, 100% 32%, 100% 100%, 0% 100%, 0% 32%);
-  padding: 0 8px 14px;
+  background: linear-gradient(to bottom, #7a4a2e 0%, #7a4a2e 36%, #2e5240 36%, #1c3526 100%);
+  clip-path: polygon(50% 0%, 100% 34%, 100% 100%, 0% 100%, 0% 34%);
+  padding: 0 8px 10px;
   text-align: center;
   cursor: pointer;
   transition: transform 0.12s, filter 0.12s;
@@ -198,7 +199,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 4px;
 }
 
 .room:hover {
@@ -206,16 +207,28 @@ main {
   filter: drop-shadow(0 5px 8px rgba(0,0,0,0.55));
 }
 
+.room .room-door {
+  width: 26px;
+  height: 32px;
+  background: #4a3420;
+  border-radius: 13px 13px 0 0;
+  margin: 0 auto;
+}
+
 .room .room-name {
   font-weight: 700;
   font-size: 1.05rem;
   color: #ffe9c2;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .room.selected {
-  background: linear-gradient(to bottom, #a56a3e 0%, #a56a3e 34%, #3a2a1a 34%, #2e2113 100%);
+  background: linear-gradient(to bottom, #a56a3e 0%, #a56a3e 36%, #3a2a1a 36%, #2e2113 100%);
   filter: drop-shadow(0 0 8px rgba(255,182,72,0.65));
+}
+
+.room.selected .room-door {
+  background: #6e4f30;
 }
 
 #controls {
@@ -286,13 +299,11 @@ main {
   line-height: 1.45;
   padding: 9px 11px;
   background: rgba(255,255,255,0.05);
-  border-left: 3px solid #6a4fa8;
   border-radius: 6px;
 }
 
 #log-list li.round-sep,
 .reveal-list li.round-sep {
-  border-left-color: #ffb648;
   color: #ffd27a;
   font-weight: 700;
   background: transparent;
@@ -306,21 +317,22 @@ main {
   padding-top: 2px;
 }
 
+/* Instead of a colored edge, each event type gets a soft full-card color
+   wash so the log reads like highlighted notes rather than tagged rows. */
 #log-list li.result-hiders,
-.reveal-list li.result-hiders { border-left-color: #58c46a; }
+.reveal-list li.result-hiders { background: rgba(88,196,106,0.16); }
 #log-list li.result-trap,
-.reveal-list li.result-trap { border-left-color: #e0543c; }
+.reveal-list li.result-trap { background: rgba(224,84,60,0.18); }
 #log-list li.result-empty,
-.reveal-list li.result-empty { border-left-color: #777; }
+.reveal-list li.result-empty { background: rgba(255,255,255,0.05); }
 
 .reveal-list li.timeline-move {
-  border-left-color: #8a6ad6;
+  background: rgba(138,106,214,0.16);
   font-style: italic;
   color: #b8e8c8;
 }
 
 .reveal-list li.reveal-heading {
-  border-left: none;
   background: transparent;
   color: #ffd27a;
   font-weight: 700;
@@ -332,12 +344,12 @@ main {
 }
 
 .reveal-list li.reveal-doll {
-  border-left-color: #ffb648;
+  background: rgba(255,182,72,0.16);
   font-weight: 600;
 }
 
 .reveal-list li.reveal-trap {
-  border-left-color: #e0543c;
+  background: rgba(224,84,60,0.18);
 }
 
 .mobile-log-mini {
@@ -354,15 +366,13 @@ main {
   line-height: 1.3;
   padding: 5px 8px;
   background: rgba(255,255,255,0.05);
-  border-left: 3px solid #6a4fa8;
   border-radius: 5px;
 }
 
-.mobile-log-mini li.result-hiders { border-left-color: #58c46a; }
-.mobile-log-mini li.result-trap { border-left-color: #e0543c; }
-.mobile-log-mini li.result-empty { border-left-color: #777; }
+.mobile-log-mini li.result-hiders { background: rgba(88,196,106,0.16); }
+.mobile-log-mini li.result-trap { background: rgba(224,84,60,0.18); }
+.mobile-log-mini li.result-empty { background: rgba(255,255,255,0.05); }
 .mobile-log-mini li.round-sep {
-  border-left-color: #ffb648;
   color: #ffd27a;
   font-weight: 700;
   background: transparent;
@@ -524,16 +534,8 @@ main {
   border: 2px dashed #8a6ad6;
 }
 
-.legend-swatch.searched-hiders {
+.legend-swatch.searched {
   border: 2px solid #58c46a;
-}
-
-.legend-swatch.searched-trap {
-  border: 2px solid #e0543c;
-}
-
-.legend-swatch.searched-empty {
-  border: 2px solid #9aa39d;
 }
 
 .round-viewer-body {
@@ -572,22 +574,10 @@ main {
   box-shadow: 0 0 0 2px rgba(138, 106, 214, 0.25);
 }
 
-.round-tile.searched-hiders {
+.round-tile.searched {
   border-style: solid;
   border-color: #58c46a;
   box-shadow: 0 0 0 3px rgba(88, 196, 106, 0.4);
-}
-
-.round-tile.searched-trap {
-  border-style: solid;
-  border-color: #e0543c;
-  box-shadow: 0 0 0 3px rgba(224, 84, 60, 0.4);
-}
-
-.round-tile.searched-empty {
-  border-style: solid;
-  border-color: #9aa39d;
-  box-shadow: 0 0 0 3px rgba(154, 163, 157, 0.35);
 }
 
 .tile-label {
@@ -653,15 +643,14 @@ main {
   margin: 0 0 8px;
   padding: 7px 9px;
   background: rgba(255,255,255,0.05);
-  border-left: 3px solid #6a4fa8;
   border-radius: 6px;
 }
 
-.round-details p.result-hiders { border-left-color: #58c46a; }
-.round-details p.result-trap { border-left-color: #e0543c; }
-.round-details p.result-empty { border-left-color: #777; }
-.round-details p.chip-divine { border-left-color: #8a6ad6; }
-.round-details p.reveal-doll { border-left-color: #ffb648; font-style: italic; }
+.round-details p.result-hiders { background: rgba(88,196,106,0.16); }
+.round-details p.result-trap { background: rgba(224,84,60,0.18); }
+.round-details p.result-empty { background: rgba(255,255,255,0.05); }
+.round-details p.chip-divine { background: rgba(138,106,214,0.16); }
+.round-details p.reveal-doll { background: rgba(255,182,72,0.16); font-style: italic; }
 
 @media (max-width: 860px) {
   /* Mobile layout: the full event log is replaced by the compact
@@ -675,6 +664,7 @@ main {
   #rooms-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
   .room { min-height: 64px; padding: 0 3px 6px; gap: 3px; }
   .room .room-name { font-size: 0.74rem; }
+  .room .room-door { width: 16px; height: 20px; border-radius: 8px 8px 0 0; }
   header h1 { font-size: 1.25rem; }
   header .subtitle { font-size: 0.7rem; }
   #header-controls { margin-top: 6px; }
