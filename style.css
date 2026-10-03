@@ -337,6 +337,24 @@ main {
 
 .round-recap-content { max-width: 380px; }
 
+.mobile-log-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #aee0c2;
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  margin: 0 0 8px;
+}
+
+.mobile-log-btn:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+.mobile-log-modal-content { max-width: 480px; }
+.mobile-log-modal-content h3:first-child { margin-top: 0; }
+.mobile-log-modal-content .reveal-list { max-height: 50vh; }
+
 .modal {
   position: fixed;
   inset: 0;
@@ -574,6 +592,7 @@ main {
   main { grid-template-columns: 1fr; }
   #log-panel { display: none; }
   .mobile-log-mini { display: flex; }
+  .mobile-log-btn { display: inline-block; }
   #rooms-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
   .room { min-height: 58px; padding: 6px 3px; gap: 3px; }
   .room .room-name { font-size: 0.74rem; }
