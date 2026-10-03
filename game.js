@@ -26,32 +26,32 @@ const STRINGS = {
     nextBtnLabel: "Next →",
     newGameBtnLabel: "New Game",
     introTitle: "The Sorcerer's Hunt",
-    introIntroText: "Six naughty gnomes have scattered across the 10 huts of Cherry Valley. You are the Sorcerer — the only one who can search these huts, but every wrong move costs you HP. Find all 6 gnomes before your HP reaches zero.",
-    introPhasesHeading: "Each round, you get two phases",
-    introDivineLi: "<strong>Divine</strong> — select exactly that round's allowance of huts and gaze into your crystal ball to reveal one combined total: how many gnomes (plus the Trap, if present) are hiding somewhere in that group. You won't know which specific hut they're in.",
-    introSearchLi: "<strong>Search</strong> — choose exactly one hut to physically search. Any gnomes there are caught immediately. If the hut turns out empty, you lose 1 HP.",
-    introAllowanceHeading: "Divination allowance by round",
-    introAllowanceLi: "Round 1: exactly 3 huts &nbsp;•&nbsp; Round 2: exactly 3 &nbsp;•&nbsp; Round 3: exactly 2 &nbsp;•&nbsp; Round 4: exactly 3 &nbsp;•&nbsp; Round 5: exactly 2 &nbsp;•&nbsp; Round 6 onward: none — searching only.",
-    introWatchHeading: "Watch out for",
-    introCloakLi: "<strong>Invisible Cloak</strong> — one gnome can turn invisible once, removing themself from the crystal ball's reading for that one round only. Every round after, they're detectable by investigation again like anyone else. Search their hut directly, though, and they're always caught regardless.",
-    introTransferLi: "<strong>Transfer Power</strong> — one gnome can relocate to any other hut once, even a hut you've already searched.",
-    introTrapLi: "<strong>The Trap</strong> — planted by the gnomes (no one carries it), and they relocate it after every search to bait you into the wrong hut. Search its hut and you lose an extra 2 HP on top of the usual search cost.",
-    introWinHeading: "Winning &amp; losing",
-    introWinText: "Catch all 6 gnomes before your 6 HP runs out to win. If your HP hits 0 first, the gnomes win — and you'll get a full reveal of where everyone was hiding in Cherry Valley.",
+    introIntroText: "Six naughty gnomes are hiding in the 10 huts of Cherry Valley. You're the Sorcerer, and you're the only one who can catch them. Find all 6 gnomes before your HP runs out. Every wrong catch costs you HP, so choose carefully.",
+    introPhasesHeading: "Each round has two steps",
+    introDivineLi: "<strong>Fortune-telling</strong> means picking some huts (the round tells you how many) and looking into your crystal ball. It tells you how many gnomes in total, plus the Trap if it's there, are hiding somewhere among those huts. It won't tell you which hut.",
+    introSearchLi: "<strong>Catch</strong> means picking one hut and catching whatever's hiding there. Any gnomes inside get caught right away. If the hut is empty, you lose 1 HP.",
+    introAllowanceHeading: "How many huts you can check each round",
+    introAllowanceLi: "In Rounds 1, 2, and 4, you can pick 3 huts. In Rounds 3 and 5, you can pick 2 huts. From Round 6 onward, no more fortune-telling is allowed, so you just catch.",
+    introWatchHeading: "Watch out for these",
+    introCloakLi: "<strong>Invisible Cloak</strong> lets one gnome turn invisible, just once. For that one round, the crystal ball won't count them. After that round, the crystal ball can spot them again like any other gnome. But choosing their hut always catches them, cloak or not.",
+    introTransferLi: "<strong>Transfer Power</strong> lets one gnome teleport to a different hut, just once. It can even teleport into a hut you already caught.",
+    introTrapLi: "<strong>The Trap</strong> is hidden by the gnomes together, so it doesn't belong to any single one of them. After every catch, the gnomes decide whether to move the Trap to a new hut or leave it right where it is. The Trap can even hide in the same hut as a gnome. If you catch the Trap's hut, you lose 2 extra HP on top of the usual cost.",
+    introWinHeading: "Winning and losing",
+    introWinText: "Catch all 6 gnomes before your HP runs out and you win. If your HP hits 0 first, the gnomes win instead, and you'll get to see exactly where everyone was hiding.",
     beginBtnLabel: "Begin the Hunt",
 
     hutLabel: roomId => `Hut ${roomId + 1}`,
-    phaseInvestigate: "Divination",
-    phaseSearching: "Hunting",
+    phaseInvestigate: "Fortune-telling",
+    phaseSearching: "Catching",
     phaseGameOver: "Game Over",
     selectedFraction: (selected, allowed) => `${selected} / ${allowed}`,
     selectedFractionDash: allowed => `— / ${allowed}`,
     caughtFraction: caught => `${caught} / 6`,
 
-    instructionsInvestigate: allowed => `Select exactly ${allowed} hut${allowed === 1 ? "" : "s"} to investigate together, then peer into your crystal ball for their combined total.`,
-    instructionsSearchNone: "No divinations remain this round — select a hut, then confirm to search it with your remaining HP.",
-    instructionsSearch: "Select a hut to search, then confirm.",
-    confirmSearchBtnLabel: "Confirm Search →",
+    instructionsInvestigate: allowed => `Pick ${allowed} hut${allowed === 1 ? "" : "s"} to check together, then look into your crystal ball to see the total.`,
+    instructionsSearchNone: "No crystal ball this round. Pick a hut, then confirm to catch it.",
+    instructionsSearch: "Pick a hut to catch, then confirm.",
+    confirmSearchBtnLabel: "Confirm Catch →",
     continueBtnLabel: "Continue",
     roundRecapHeading: round => `Round ${round} Recap`,
     viewFullLogBtnLabel: "View Full Event Log",
@@ -66,12 +66,12 @@ const STRINGS = {
     logRoundBegins: round => `— Round ${round} begins —`,
     logInvestigationMain: (round, roomIds, sum) => `Round ${round}: Peered into the crystal ball over ${roomIds.map(id => t("hutLabel", id)).join(", ")} — combined total: ${sum} magical presence${sum === 1 ? "" : "s"} detected.`,
     logInvestigationEmpty: roomIds => `${roomIds.map(id => t("hutLabel", id)).join(", ")}: confirmed completely empty.`,
-    logSearchHidersTrap: (roomId, count) => `Searched ${t("hutLabel", roomId)} — caught ${count} Gnome${count === 1 ? "" : "s"}! But a Trap was also hidden there — -2 HP.`,
-    logSearchHidersNoTrap: (roomId, count) => `Searched ${t("hutLabel", roomId)} — caught ${count} Gnome${count === 1 ? "" : "s"}! No HP lost.`,
+    logSearchHidersTrap: (roomId, count) => `Caught ${t("hutLabel", roomId)} — found ${count} Gnome${count === 1 ? "" : "s"}! But a Trap was also hidden there — -2 HP.`,
+    logSearchHidersNoTrap: (roomId, count) => `Caught ${t("hutLabel", roomId)} — found ${count} Gnome${count === 1 ? "" : "s"}! No HP lost.`,
     logSearchCloakCaught: () => "Among them was the Gnome who held the Invisible Cloak!",
     logSearchTransferCaught: () => "Among them was the Gnome who held the Transfer Power!",
-    logSearchTrap: roomId => `Searched ${t("hutLabel", roomId)} — empty, but the Trap was hidden there! -1 HP (empty hut) and -2 HP (trap) = -3 HP total.`,
-    logSearchEmpty: roomId => `Searched ${t("hutLabel", roomId)} — empty. -1 HP.`,
+    logSearchTrap: roomId => `Caught ${t("hutLabel", roomId)} — empty, but the Trap was hidden there! -1 HP (empty hut) and -2 HP (trap) = -3 HP total.`,
+    logSearchEmpty: roomId => `Caught ${t("hutLabel", roomId)} — empty. -1 HP.`,
 
     revealInitialHeading: "Initial hiding arrangement",
     revealHutCount: (roomId, count) => `${t("hutLabel", roomId)}: ${count} Gnome${count === 1 ? "" : "s"}`,
@@ -79,7 +79,7 @@ const STRINGS = {
     neverCaughtHeading: "Gnomes never caught",
     movedDesc: (startRoom, currentRoom, round) => `started in ${t("hutLabel", startRoom)}, moved to ${t("hutLabel", currentRoom)} at the start of Round ${round}`,
     stayedDesc: startRoom => `stayed in ${t("hutLabel", startRoom)} the whole game`,
-    itemNoteCloakActivated: round => ` Held the Invisible Cloak, activated for Round ${round}'s divination only — detectable again every round after.`,
+    itemNoteCloakActivated: round => ` Held the Invisible Cloak, activated for Round ${round}'s fortune-telling only — detectable again every round after.`,
     itemNoteCloakNever: " Held the Invisible Cloak, never activated.",
     itemNoteTransferUsed: " Held the Transfer Power, used as described above.",
     itemNoteTransferNever: " Held the Transfer Power, never used.",
@@ -92,25 +92,23 @@ const STRINGS = {
     roundLabel: (round, total) => `Round ${round} / ${total}`,
     beforeRoundHeading: "Before this round",
     noMovements: "No movements.",
-    divinationHeading: "Divination",
+    divinationHeading: "Fortune-telling",
     divinationResultDetail: (roomIds, sum) => `Peered into the crystal ball over ${roomIds.map(id => t("hutLabel", id)).join(", ")} — combined total: ${sum} magical presence${sum === 1 ? "" : "s"} detected.`,
-    noDivinationThisRound: "No divination this round — search only.",
-    searchHeading: "Search",
-    searchCaughtDetail: (roomId, labels, count) => `Searched ${t("hutLabel", roomId)} — caught Gnome${count === 1 ? "" : "s"} ${labels}!`,
+    noDivinationThisRound: "No fortune-telling this round — catch only.",
+    searchHeading: "Catch",
+    searchCaughtDetail: (roomId, labels, count) => `Caught ${t("hutLabel", roomId)} — found Gnome${count === 1 ? "" : "s"} ${labels}!`,
     itemHolderCloak: "Invisible Cloak holder",
     itemHolderTransfer: "Transfer Power holder",
     trapAlsoHiddenSuffix: " A Trap was also hidden there — -2 HP.",
     noHpLostSuffix: " No HP lost.",
-    searchTrapDetail: roomId => `Searched ${t("hutLabel", roomId)} — empty, but the Trap was hidden there! -1 HP (empty) and -2 HP (trap) = -3 HP total.`,
-    searchEmptyDetail: roomId => `Searched ${t("hutLabel", roomId)} — empty. -1 HP.`,
+    searchTrapDetail: roomId => `Caught ${t("hutLabel", roomId)} — empty, but the Trap was hidden there! -1 HP (empty) and -2 HP (trap) = -3 HP total.`,
+    searchEmptyDetail: roomId => `Caught ${t("hutLabel", roomId)} — empty. -1 HP.`,
     trapTooltip: "Trap",
     gnomeTooltip: letter => `Gnome ${letter}`,
     legendNormalGnome: "Gnome",
     legendCloakGhostedNote: "(dotted line when used invisibility this round)",
-    legendBorderInvestigated: "Investigated this round",
-    legendBorderSearchedHiders: "Searched — Gnome(s) found",
-    legendBorderSearchedTrap: "Searched — Trap triggered",
-    legendBorderSearchedEmpty: "Searched — empty",
+    legendBorderInvestigated: "Investigated",
+    legendBorderSearched: "Caught",
   },
   zh: {
     docTitle: "巫師的狩獵",
@@ -130,32 +128,32 @@ const STRINGS = {
     nextBtnLabel: "下一回合 →",
     newGameBtnLabel: "開始新遊戲",
     introTitle: "巫師的狩獵",
-    introIntroText: "六隻搗蛋地精已經躲進櫻桃谷的10間小屋中。你是唯一能夠搜查這些小屋的巫師，但每次行動錯誤都會耗損你的生命值。請在生命值歸零之前找出全部6隻地精。",
-    introPhasesHeading: "每個回合都有兩個階段",
-    introDivineLi: "<strong>占卜</strong> — 選擇剛好等於該回合上限數量的小屋，凝視水晶球以得知這組小屋的合計結果：裡面共藏有多少隻地精（若有陷阱也會一併計入）。但你不會知道牠們確切藏在哪一間小屋。",
-    introSearchLi: "<strong>搜查</strong> — 選擇剛好一間小屋親自搜查。裡面若有地精會立刻被抓住；若小屋是空的，你會損失1點生命值。",
-    introAllowanceHeading: "各回合的占卜上限",
-    introAllowanceLi: "第1回合：剛好3間 &nbsp;•&nbsp; 第2回合：剛好3間 &nbsp;•&nbsp; 第3回合：剛好2間 &nbsp;•&nbsp; 第4回合：剛好3間 &nbsp;•&nbsp; 第5回合：剛好2間 &nbsp;•&nbsp; 第6回合起：沒有占卜機會，只能搜查。",
-    introWatchHeading: "請特別留意",
-    introCloakLi: "<strong>隱身斗篷</strong> — 其中一隻地精可以隱身一次，使自己在那一個回合的水晶球占卜結果中消失。之後的每個回合，牠都會和其他地精一樣能被占卜偵測到。不過只要直接搜查牠所在的小屋，無論如何都會被抓住。",
-    introTransferLi: "<strong>傳送能力</strong> — 其中一隻地精可以使用一次能力，傳送到任何一間小屋，即使是你已經搜查過的小屋也可以。",
-    introTrapLi: "<strong>陷阱</strong> — 由地精們共同設下（不屬於任何一隻地精），牠們會在每次搜查後重新移動陷阱，引誘你搜查錯誤的小屋。搜查到陷阱所在的小屋，除了一般搜查代價外，還會額外損失2點生命值。",
-    introWinHeading: "獲勝與落敗",
-    introWinText: "在6點生命值耗盡之前抓住全部6隻地精即可獲勝。若生命值先歸零，則地精獲勝——屆時你將看到櫻桃谷中所有地精藏身處的完整真相。",
+    introIntroText: "六隻調皮的地精躲進了櫻桃谷的10間小屋裡。你是巫師，只有你能捕捉牠們。要在生命值耗盡之前，抓到全部6隻地精。每次捕捉撲空都會扣生命值，要小心喔。",
+    introPhasesHeading: "每個回合分成兩個步驟",
+    introDivineLi: "<strong>占卜</strong>就是選幾間小屋（這回合可以選幾間，遊戲會告訴你），然後看著水晶球。水晶球會告訴你一個數字，就是這些小屋裡總共藏了多少隻地精（如果陷阱也在裡面，也算進去）。不過它不會告訴你，地精究竟躲在哪一間小屋。",
+    introSearchLi: "<strong>捕捉</strong>就是選一間小屋，親自去捕捉。裡面如果有地精，會馬上被你抓住。小屋如果是空的，你會損失1點生命值。",
+    introAllowanceHeading: "每回合可以占卜幾間小屋",
+    introAllowanceLi: "第1、2、4回合，你可以選3間小屋；第3、5回合，你可以選2間小屋。第6回合開始，不能再占卜了，只能捕捉。",
+    introWatchHeading: "要特別小心這些",
+    introCloakLi: "<strong>隱身斗篷</strong>可以讓其中一隻地精隱身一次。那個回合，水晶球不會把牠算進去。之後的回合，水晶球就能像平常一樣偵測到牠。不過，只要你選中牠躲的那間小屋，不管牠有沒有隱身，都一定會被抓到。",
+    introTransferLi: "<strong>傳送能力</strong>可以讓其中一隻地精傳送一次，跳到任何一間小屋，就算是你已經捕捉過的小屋也可以。",
+    introTrapLi: "<strong>陷阱</strong>是地精們一起設下的機關，不屬於任何一隻地精。每次你捕捉之後，地精們會決定要把陷阱移到新的小屋，還是留在原地不動。陷阱也可能和地精躲在同一間小屋裡。如果你捕捉到陷阱所在的小屋，除了平常的損失，還要再扣2點生命值。",
+    introWinHeading: "怎麼樣才算贏，怎麼樣才算輸",
+    introWinText: "在生命值用完之前，抓到全部6隻地精，你就獲勝了。如果生命值先歸零，就換地精獲勝，這時候你會看到所有地精到底躲在哪裡。",
     beginBtnLabel: "開始狩獵",
 
     hutLabel: roomId => `小屋 ${roomId + 1}`,
     phaseInvestigate: "占卜",
-    phaseSearching: "狩獵中",
+    phaseSearching: "捕捉中",
     phaseGameOver: "遊戲結束",
     selectedFraction: (selected, allowed) => `${selected} / ${allowed}`,
     selectedFractionDash: allowed => `— / ${allowed}`,
     caughtFraction: caught => `${caught} / 6`,
 
-    instructionsInvestigate: allowed => `選擇剛好${allowed}間小屋一起占卜，接著凝視水晶球得知牠們的合計結果。`,
-    instructionsSearchNone: "本回合沒有占卜機會了——請選擇一間小屋，然後確認以使用剩餘生命值進行搜查。",
-    instructionsSearch: "請選擇一間小屋進行搜查，然後確認。",
-    confirmSearchBtnLabel: "確認搜查 →",
+    instructionsInvestigate: allowed => `選${allowed}間小屋一起占卜，然後看看水晶球裡的合計結果。`,
+    instructionsSearchNone: "這回合沒有占卜機會了，請選一間小屋，然後按確認進行捕捉。",
+    instructionsSearch: "選一間小屋來捕捉，然後按確認。",
+    confirmSearchBtnLabel: "確認捕捉 →",
     continueBtnLabel: "繼續",
     roundRecapHeading: round => `第${round}回合總結`,
     viewFullLogBtnLabel: "查看完整紀錄",
@@ -170,12 +168,12 @@ const STRINGS = {
     logRoundBegins: round => `— 第${round}回合開始 —`,
     logInvestigationMain: (round, roomIds, sum) => `第${round}回合：凝視水晶球查看${roomIds.map(id => t("hutLabel", id)).join("、")}——合計偵測到${sum}股魔法氣息。`,
     logInvestigationEmpty: roomIds => `${roomIds.map(id => t("hutLabel", id)).join("、")}：確認完全空無一物。`,
-    logSearchHidersTrap: (roomId, count) => `搜查了${t("hutLabel", roomId)}——抓到${count}隻地精！但該處還藏有陷阱——損失2點生命值。`,
-    logSearchHidersNoTrap: (roomId, count) => `搜查了${t("hutLabel", roomId)}——抓到${count}隻地精！沒有損失生命值。`,
+    logSearchHidersTrap: (roomId, count) => `捕捉了${t("hutLabel", roomId)}——抓到${count}隻地精！但該處還藏有陷阱——損失2點生命值。`,
+    logSearchHidersNoTrap: (roomId, count) => `捕捉了${t("hutLabel", roomId)}——抓到${count}隻地精！沒有損失生命值。`,
     logSearchCloakCaught: () => "其中包含持有隱身斗篷的地精！",
     logSearchTransferCaught: () => "其中包含持有傳送能力的地精！",
-    logSearchTrap: roomId => `搜查了${t("hutLabel", roomId)}——空無一物，但陷阱就藏在那裡！損失1點生命值（空屋）加上2點生命值（陷阱）＝共損失3點生命值。`,
-    logSearchEmpty: roomId => `搜查了${t("hutLabel", roomId)}——空無一物。損失1點生命值。`,
+    logSearchTrap: roomId => `捕捉了${t("hutLabel", roomId)}——空無一物，但陷阱就藏在那裡！損失1點生命值（空屋）加上2點生命值（陷阱）＝共損失3點生命值。`,
+    logSearchEmpty: roomId => `捕捉了${t("hutLabel", roomId)}——空無一物。損失1點生命值。`,
 
     revealInitialHeading: "初始藏身分佈",
     revealHutCount: (roomId, count) => `${t("hutLabel", roomId)}：${count}隻地精`,
@@ -198,23 +196,21 @@ const STRINGS = {
     noMovements: "沒有任何變動。",
     divinationHeading: "占卜",
     divinationResultDetail: (roomIds, sum) => `凝視水晶球查看${roomIds.map(id => t("hutLabel", id)).join("、")}——合計偵測到${sum}股魔法氣息。`,
-    noDivinationThisRound: "本回合沒有占卜——只能搜查。",
-    searchHeading: "搜查",
-    searchCaughtDetail: (roomId, labels, count) => `搜查了${t("hutLabel", roomId)}——抓到地精${labels}！`,
+    noDivinationThisRound: "本回合沒有占卜——只能捕捉。",
+    searchHeading: "捕捉",
+    searchCaughtDetail: (roomId, labels, count) => `捕捉了${t("hutLabel", roomId)}——抓到地精${labels}！`,
     itemHolderCloak: "隱身斗篷持有者",
     itemHolderTransfer: "傳送能力持有者",
     trapAlsoHiddenSuffix: "　該處還藏有陷阱——損失2點生命值。",
     noHpLostSuffix: "　沒有損失生命值。",
-    searchTrapDetail: roomId => `搜查了${t("hutLabel", roomId)}——空無一物，但陷阱就藏在那裡！損失1點生命值（空屋）加上2點生命值（陷阱）＝共損失3點生命值。`,
-    searchEmptyDetail: roomId => `搜查了${t("hutLabel", roomId)}——空無一物。損失1點生命值。`,
+    searchTrapDetail: roomId => `捕捉了${t("hutLabel", roomId)}——空無一物，但陷阱就藏在那裡！損失1點生命值（空屋）加上2點生命值（陷阱）＝共損失3點生命值。`,
+    searchEmptyDetail: roomId => `捕捉了${t("hutLabel", roomId)}——空無一物。損失1點生命值。`,
     trapTooltip: "陷阱",
     gnomeTooltip: letter => `地精${letter}`,
     legendNormalGnome: "地精",
     legendCloakGhostedNote: "（本回合使用隱身能力時會顯示虛線外框）",
-    legendBorderInvestigated: "本回合占卜過",
-    legendBorderSearchedHiders: "搜查過——抓到地精",
-    legendBorderSearchedTrap: "搜查過——觸發陷阱",
-    legendBorderSearchedEmpty: "搜查過——空無一物",
+    legendBorderInvestigated: "占卜過",
+    legendBorderSearched: "捕捉過",
   },
 };
 
@@ -362,12 +358,14 @@ function applySearch(state, roomId, logFn) {
 
 function relocateTrapDoll(state, rng) {
   if (!state.trap.active) return;
-  // The Trap can share a room with Hiders and gets to relocate after every
-  // search, and the Hiders pick its next room with real thinking: the goal is
-  // to mislead the Catcher's deduction during investigation (the trap's +1
+  // The Trap can share a room with Hiders, and after every catch the Hiders
+  // reconsider where it should sit with real thinking: the goal is to
+  // mislead the Catcher's deduction during investigation (the trap's +1
   // makes an innocent room look like it holds a Hider) and to bait a search
   // that costs HP. That means the target room must be one a rational Catcher
-  // is still actually likely to investigate or search again.
+  // is still actually likely to investigate or search again. Relocating is
+  // not automatic — if the room the Trap already sits in is still just as
+  // deceptive as anywhere else, the Hiders leave it exactly where it is.
   const unsearched = state.rooms.filter(r => !r.searched).map(r => r.id);
   if (unsearched.length === 0) return;
 
@@ -415,7 +413,13 @@ function relocateTrapDoll(state, rng) {
     if (hiderFree.length > 0) best = hiderFree;
   }
 
-  const chosen = best[Math.floor(rng() * best.length)];
+  // Moving the Trap only pays off if some other room is now a clearly
+  // better decoy than the one it already occupies. If its current room is
+  // still tied for the most misleading choice, the Hiders gain nothing by
+  // moving it and simply leave it where it is.
+  const chosen = best.includes(state.trap.roomId)
+    ? state.trap.roomId
+    : best[Math.floor(rng() * best.length)];
   if (chosen !== state.trap.roomId) {
     const from = state.trap.roomId;
     state.trap.roomId = chosen;
@@ -865,12 +869,11 @@ function renderRoundPage(snapshots, idx) {
 
   const investigatedSet = new Set(snap.investigation ? snap.investigation.roomIds : []);
   const searchedRoomId = snap.search ? snap.search.roomId : null;
-  let searchedCls = "";
-  if (snap.search) {
-    if (snap.search.outcome.type === "hiders") searchedCls = "searched-hiders";
-    else if (snap.search.outcome.type === "trap") searchedCls = "searched-trap";
-    else searchedCls = "searched-empty";
-  }
+  // Border coding is intentionally simple: dotted purple = investigated this
+  // round, solid green = searched this round. What was actually found there
+  // (gnome dots, bomb icon) is conveyed separately, so the border doesn't
+  // need its own color per outcome.
+  const searchedCls = snap.search ? "searched" : "";
 
   tiles.innerHTML = "";
   for (let roomId = 0; roomId < NUM_ROOMS; roomId++) {
@@ -974,9 +977,7 @@ function renderRoundLegend() {
   addItem('<span class="tile-dot dot-transfer"></span>', t("itemHolderTransfer"));
   addItem('<span class="tile-trap">💣</span>', t("trapTooltip"));
   addItem('<span class="legend-swatch investigated"></span>', t("legendBorderInvestigated"));
-  addItem('<span class="legend-swatch searched-hiders"></span>', t("legendBorderSearchedHiders"));
-  addItem('<span class="legend-swatch searched-trap"></span>', t("legendBorderSearchedTrap"));
-  addItem('<span class="legend-swatch searched-empty"></span>', t("legendBorderSearchedEmpty"));
+  addItem('<span class="legend-swatch searched"></span>', t("legendBorderSearched"));
 }
 
 /* ---------- Mobile round recap ---------- */
@@ -1048,6 +1049,10 @@ function render() {
     const el = document.createElement("div");
     el.className = "room";
     if ((s.phase === "investigate" || s.phase === "catch") && s.selected.has(room.id)) el.classList.add("selected");
+
+    const door = document.createElement("div");
+    door.className = "room-door";
+    el.appendChild(door);
 
     const name = document.createElement("div");
     name.className = "room-name";
