@@ -47,6 +47,7 @@
     <section id="rooms-wrap">
       <p id="instructions" class="instructions"></p>
       <ul id="mobile-log-mini" class="mobile-log-mini"></ul>
+      <button id="view-full-log-btn" class="mobile-log-btn" data-i18n="viewFullLogBtnLabel">📜 View Full Event Log</button>
       <div id="rooms-grid"></div>
       <div id="controls">
         <button id="reveal-btn" class="action-btn hidden" data-i18n="revealBtnLabel">Gaze Into the Crystal Ball &rarr;</button>
@@ -76,6 +77,14 @@
         <div id="round-details" class="round-details"></div>
       </div>
       <button id="new-game-btn" class="action-btn" data-i18n="newGameBtnLabel">New Game</button>
+    </div>
+  </div>
+
+  <div id="mobile-log-modal" class="modal hidden">
+    <div class="modal-content mobile-log-modal-content">
+      <h3 data-i18n="eventLogHeading">Event Log</h3>
+      <ul id="mobile-log-full-list" class="reveal-list"></ul>
+      <button id="mobile-log-close-btn" class="action-btn" data-i18n="closeBtnLabel">Close</button>
     </div>
   </div>
 
