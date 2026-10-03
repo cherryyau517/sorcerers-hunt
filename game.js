@@ -28,10 +28,10 @@ const STRINGS = {
     introTitle: "The Sorcerer's Hunt",
     introIntroText: "Six naughty gnomes have scattered across the 10 huts of Cherry Valley. You are the Sorcerer — the only one who can search these huts, but every wrong move costs you HP. Find all 6 gnomes before your HP reaches zero.",
     introPhasesHeading: "Each round, you get two phases",
-    introDivineLi: "<strong>Divine</strong> — select a group of huts (up to that round's allowance) and gaze into your crystal ball to reveal one combined total: how many gnomes (plus the Trap, if present) are hiding somewhere in that group. You won't know which specific hut they're in.",
+    introDivineLi: "<strong>Divine</strong> — select exactly that round's allowance of huts and gaze into your crystal ball to reveal one combined total: how many gnomes (plus the Trap, if present) are hiding somewhere in that group. You won't know which specific hut they're in.",
     introSearchLi: "<strong>Search</strong> — choose exactly one hut to physically search. Any gnomes there are caught immediately. If the hut turns out empty, you lose 1 HP.",
     introAllowanceHeading: "Divination allowance by round",
-    introAllowanceLi: "Round 1: up to 3 huts &nbsp;•&nbsp; Round 2: up to 3 &nbsp;•&nbsp; Round 3: up to 2 &nbsp;•&nbsp; Round 4: up to 3 &nbsp;•&nbsp; Round 5: up to 2 &nbsp;•&nbsp; Round 6 onward: none — searching only.",
+    introAllowanceLi: "Round 1: exactly 3 huts &nbsp;•&nbsp; Round 2: exactly 3 &nbsp;•&nbsp; Round 3: exactly 2 &nbsp;•&nbsp; Round 4: exactly 3 &nbsp;•&nbsp; Round 5: exactly 2 &nbsp;•&nbsp; Round 6 onward: none — searching only.",
     introWatchHeading: "Watch out for",
     introCloakLi: "<strong>Invisible Cloak</strong> — one gnome can turn invisible once, removing themself from the crystal ball's reading for that one round only. Every round after, they're detectable by investigation again like anyone else. Search their hut directly, though, and they're always caught regardless.",
     introTransferLi: "<strong>Transfer Power</strong> — one gnome can relocate to any other hut once, even a hut you've already searched.",
@@ -48,7 +48,7 @@ const STRINGS = {
     selectedFractionDash: allowed => `— / ${allowed}`,
     caughtFraction: caught => `${caught} / 6`,
 
-    instructionsInvestigate: allowed => `Select up to ${allowed} hut${allowed === 1 ? "" : "s"} to investigate together, then peer into your crystal ball for their combined total.`,
+    instructionsInvestigate: allowed => `Select exactly ${allowed} hut${allowed === 1 ? "" : "s"} to investigate together, then peer into your crystal ball for their combined total.`,
     instructionsSearchNone: "No divinations remain this round — select a hut, then confirm to search it with your remaining HP.",
     instructionsSearch: "Select a hut to search, then confirm.",
     confirmSearchBtnLabel: "Confirm Search →",
@@ -76,15 +76,6 @@ const STRINGS = {
     revealInitialHeading: "Initial hiding arrangement",
     revealHutCount: (roomId, count) => `${t("hutLabel", roomId)}: ${count} Gnome${count === 1 ? "" : "s"}`,
     revealTrapStart: roomId => `Trap started in ${t("hutLabel", roomId)}.`,
-    revealItemHeading: "Item holders",
-    cloakActivatedStatus: round => `activated for Round ${round}'s divination only, detectable again afterward`,
-    cloakNeverActivatedCaughtStatus: "never activated — caught before using it",
-    cloakNeverActivatedStatus: "never activated",
-    cloakLine: (letter, startRoom, status) => `Gnome ${letter} (started in ${t("hutLabel", startRoom)}) held the Invisible Cloak — ${status}.`,
-    transferMovedStatus: (from, to, round) => `moved from ${t("hutLabel", from)} to ${t("hutLabel", to)} at the start of Round ${round}`,
-    transferNeverUsedCaughtStatus: startRoom => `never used — caught in ${t("hutLabel", startRoom)} before moving`,
-    transferNeverUsedStatus: startRoom => `never used — remained in ${t("hutLabel", startRoom)} the whole game`,
-    transferLine: (letter, startRoom, status) => `Gnome ${letter} (started in ${t("hutLabel", startRoom)}) held the Transfer Power — ${status}.`,
     neverCaughtHeading: "Gnomes never caught",
     movedDesc: (startRoom, currentRoom, round) => `started in ${t("hutLabel", startRoom)}, moved to ${t("hutLabel", currentRoom)} at the start of Round ${round}`,
     stayedDesc: startRoom => `stayed in ${t("hutLabel", startRoom)} the whole game`,
@@ -114,6 +105,8 @@ const STRINGS = {
     searchEmptyDetail: roomId => `Searched ${t("hutLabel", roomId)} — empty. -1 HP.`,
     trapTooltip: "Trap",
     gnomeTooltip: letter => `Gnome ${letter}`,
+    legendNormalGnome: "Gnome",
+    legendGhostedGnome: "Invisible this round",
   },
   zh: {
     docTitle: "巫師的狩獵",
@@ -135,10 +128,10 @@ const STRINGS = {
     introTitle: "巫師的狩獵",
     introIntroText: "六隻搗蛋地精已經躲進櫻桃谷的10間小屋中。你是唯一能夠搜查這些小屋的巫師，但每次行動錯誤都會耗損你的生命值。請在生命值歸零之前找出全部6隻地精。",
     introPhasesHeading: "每個回合都有兩個階段",
-    introDivineLi: "<strong>占卜</strong> — 選擇一組小屋（數量不超過該回合的上限），凝視水晶球以得知這組小屋的合計結果：裡面共藏有多少隻地精（若有陷阱也會一併計入）。但你不會知道牠們確切藏在哪一間小屋。",
+    introDivineLi: "<strong>占卜</strong> — 選擇剛好等於該回合上限數量的小屋，凝視水晶球以得知這組小屋的合計結果：裡面共藏有多少隻地精（若有陷阱也會一併計入）。但你不會知道牠們確切藏在哪一間小屋。",
     introSearchLi: "<strong>搜查</strong> — 選擇剛好一間小屋親自搜查。裡面若有地精會立刻被抓住；若小屋是空的，你會損失1點生命值。",
     introAllowanceHeading: "各回合的占卜上限",
-    introAllowanceLi: "第1回合：最多3間 &nbsp;•&nbsp; 第2回合：最多3間 &nbsp;•&nbsp; 第3回合：最多2間 &nbsp;•&nbsp; 第4回合：最多3間 &nbsp;•&nbsp; 第5回合：最多2間 &nbsp;•&nbsp; 第6回合起：沒有占卜機會，只能搜查。",
+    introAllowanceLi: "第1回合：剛好3間 &nbsp;•&nbsp; 第2回合：剛好3間 &nbsp;•&nbsp; 第3回合：剛好2間 &nbsp;•&nbsp; 第4回合：剛好3間 &nbsp;•&nbsp; 第5回合：剛好2間 &nbsp;•&nbsp; 第6回合起：沒有占卜機會，只能搜查。",
     introWatchHeading: "請特別留意",
     introCloakLi: "<strong>隱身斗篷</strong> — 其中一隻地精可以隱身一次，使自己在那一個回合的水晶球占卜結果中消失。之後的每個回合，牠都會和其他地精一樣能被占卜偵測到。不過只要直接搜查牠所在的小屋，無論如何都會被抓住。",
     introTransferLi: "<strong>傳送能力</strong> — 其中一隻地精可以使用一次能力，傳送到任何一間小屋，即使是你已經搜查過的小屋也可以。",
@@ -155,7 +148,7 @@ const STRINGS = {
     selectedFractionDash: allowed => `— / ${allowed}`,
     caughtFraction: caught => `${caught} / 6`,
 
-    instructionsInvestigate: allowed => `選擇最多${allowed}間小屋一起占卜，接著凝視水晶球得知牠們的合計結果。`,
+    instructionsInvestigate: allowed => `選擇剛好${allowed}間小屋一起占卜，接著凝視水晶球得知牠們的合計結果。`,
     instructionsSearchNone: "本回合沒有占卜機會了——請選擇一間小屋，然後確認以使用剩餘生命值進行搜查。",
     instructionsSearch: "請選擇一間小屋進行搜查，然後確認。",
     confirmSearchBtnLabel: "確認搜查 →",
@@ -183,15 +176,6 @@ const STRINGS = {
     revealInitialHeading: "初始藏身分佈",
     revealHutCount: (roomId, count) => `${t("hutLabel", roomId)}：${count}隻地精`,
     revealTrapStart: roomId => `陷阱一開始藏在${t("hutLabel", roomId)}。`,
-    revealItemHeading: "能力持有者",
-    cloakActivatedStatus: round => `僅在第${round}回合的占卜中啟動隱身，之後都能被偵測到`,
-    cloakNeverActivatedCaughtStatus: "從未啟動——在使用之前就被抓住了",
-    cloakNeverActivatedStatus: "從未啟動",
-    cloakLine: (letter, startRoom, status) => `地精${letter}（一開始藏在${t("hutLabel", startRoom)}）持有隱身斗篷——${status}。`,
-    transferMovedStatus: (from, to, round) => `在第${round}回合開始時，從${t("hutLabel", from)}傳送到了${t("hutLabel", to)}`,
-    transferNeverUsedCaughtStatus: startRoom => `從未使用——在傳送之前就在${t("hutLabel", startRoom)}被抓住了`,
-    transferNeverUsedStatus: startRoom => `從未使用——整場遊戲都留在${t("hutLabel", startRoom)}`,
-    transferLine: (letter, startRoom, status) => `地精${letter}（一開始藏在${t("hutLabel", startRoom)}）持有傳送能力——${status}。`,
     neverCaughtHeading: "未被抓到的地精",
     movedDesc: (startRoom, currentRoom, round) => `一開始藏在${t("hutLabel", startRoom)}，在第${round}回合開始時傳送到了${t("hutLabel", currentRoom)}`,
     stayedDesc: startRoom => `整場遊戲都留在${t("hutLabel", startRoom)}`,
@@ -221,6 +205,8 @@ const STRINGS = {
     searchEmptyDetail: roomId => `搜查了${t("hutLabel", roomId)}——空無一物。損失1點生命值。`,
     trapTooltip: "陷阱",
     gnomeTooltip: letter => `地精${letter}`,
+    legendNormalGnome: "地精",
+    legendGhostedGnome: "本回合隱身中",
   },
 };
 
@@ -705,7 +691,7 @@ function toggleRoomClick(roomId) {
 }
 
 function doReveal() {
-  if (!gameState || gameState.phase !== "investigate" || gameState.selected.size === 0) return;
+  if (!gameState || gameState.phase !== "investigate" || gameState.selected.size !== investigationsAllowed(gameState.round)) return;
   const roomIds = [...gameState.selected];
   applyInvestigation(gameState, roomIds, logInvestigation);
   render();
@@ -745,26 +731,6 @@ function buildRevealSummary(state) {
     line(t("revealHutCount", r, roomCounts[r]));
   });
   line(t("revealTrapStart", state.setupReveal.trapInitialRoomId), "reveal-trap");
-
-  spacer();
-  heading(t("revealItemHeading"));
-  state.hiders.forEach(h => {
-    const startRoom = state.setupReveal.hiderInitialRooms[h.id];
-    if (h.item === "invisible") {
-      let status;
-      if (state.invisibleActivationRound) status = t("cloakActivatedStatus", state.invisibleActivationRound);
-      else if (h.caught) status = t("cloakNeverActivatedCaughtStatus");
-      else status = t("cloakNeverActivatedStatus");
-      line(t("cloakLine", gnomeLabel(h.id), startRoom, status), "reveal-doll");
-    }
-    if (h.item === "transfer") {
-      let status;
-      if (state.transferMoveLog) status = t("transferMovedStatus", state.transferMoveLog.from, state.transferMoveLog.to, state.transferMoveLog.round);
-      else if (h.caught) status = t("transferNeverUsedCaughtStatus", startRoom);
-      else status = t("transferNeverUsedStatus", startRoom);
-      line(t("transferLine", gnomeLabel(h.id), startRoom, status), "reveal-doll");
-    }
-  });
 
   if (state.result === "lose") {
     const uncaught = state.hiders.filter(h => !h.caught);
@@ -925,7 +891,7 @@ function renderRoundPage(snapshots, idx) {
     if (snap.trapRoomId === roomId) {
       const trapMark = document.createElement("span");
       trapMark.className = "tile-trap";
-      trapMark.textContent = "🪤";
+      trapMark.textContent = "💣";
       trapMark.title = t("trapTooltip");
       dotsWrap.appendChild(trapMark);
     }
@@ -977,6 +943,29 @@ function renderRoundPage(snapshots, idx) {
       addDetail(t("searchEmptyDetail", snap.search.roomId), "result-empty");
     }
   }
+}
+
+// Explains what each dot color / marker in the round-tile timeline means.
+// Built once whenever the reveal modal is shown — it doesn't change between
+// Prev/Next navigation, since the coloring scheme is fixed for the whole game.
+function renderRoundLegend() {
+  const legend = document.getElementById("round-legend");
+  if (!legend) return;
+  legend.innerHTML = "";
+  const addItem = (dotHtml, label) => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    item.innerHTML = dotHtml;
+    const span = document.createElement("span");
+    span.textContent = label;
+    item.appendChild(span);
+    legend.appendChild(item);
+  };
+  addItem('<span class="tile-dot dot-normal"></span>', t("legendNormalGnome"));
+  addItem('<span class="tile-dot dot-invisible"></span>', t("itemHolderCloak"));
+  addItem('<span class="tile-dot dot-transfer"></span>', t("itemHolderTransfer"));
+  addItem('<span class="tile-dot dot-invisible ghosted"></span>', t("legendGhostedGnome"));
+  addItem('<span class="tile-trap">💣</span>', t("trapTooltip"));
 }
 
 /* ---------- Mobile round recap ---------- */
@@ -1067,7 +1056,7 @@ function render() {
   const searchConfirmBtn = document.getElementById("search-confirm-btn");
   if (s.phase === "investigate") {
     revealBtn.classList.remove("hidden");
-    revealBtn.disabled = s.selected.size === 0;
+    revealBtn.disabled = s.selected.size !== allowed;
     searchConfirmBtn.classList.add("hidden");
   } else if (s.phase === "catch") {
     revealBtn.classList.add("hidden");
@@ -1143,6 +1132,7 @@ function render() {
     }
     gameState.__revealSnapshots = buildRoundSnapshots(s);
     if (revealRoundIndex >= gameState.__revealSnapshots.length) revealRoundIndex = Math.max(0, gameState.__revealSnapshots.length - 1);
+    renderRoundLegend();
     renderRoundPage(gameState.__revealSnapshots, revealRoundIndex);
   } else {
     modal.classList.add("hidden");
