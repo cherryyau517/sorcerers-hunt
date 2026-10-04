@@ -1,4 +1,4 @@
-"use strict";
+="use strict";
 
 const NUM_ROOMS = 10;
 const NUM_HIDERS = 6;
@@ -212,6 +212,108 @@ const STRINGS = {
     legendBorderInvestigated: "占卜過",
     legendBorderSearched: "捕捉過",
   },
+  ja: {
+    docTitle: "魔法使いの狩り",
+    appTitle: "魔法使いの狩り",
+    appSubtitle: "きみは魔法使い。HPがなくなる前に、チェリーバレーのどこかに隠れているいたずらグノーム6匹を見つけ出そう。",
+    helpBtn: "あそびかた",
+    statHP: "魔法使いのHP",
+    statFound: "見つけた数",
+    statRound: "ラウンド",
+    statPhase: "フェーズ",
+    statSelected: "選択中",
+    eventLogHeading: "できごとの記録",
+    revealBtnLabel: "水晶玉をのぞく →",
+    fullRevealHeading: "すべての真実",
+    gameTimelineHeading: "ゲームの記録",
+    prevBtnLabel: "← 前へ",
+    nextBtnLabel: "次へ →",
+    newGameBtnLabel: "新しいゲーム",
+    introTitle: "魔法使いの狩り",
+    introIntroText: "いたずらなグノームが6匹、チェリーバレーの10軒の小屋のどこかに隠れています。きみは魔法使いで、グノームをつかまえられるのはきみだけ。HPがなくなる前に、6匹全員を見つけよう。つかまえそこねるとHPが減るから、よく考えて選んでね。",
+    introPhasesHeading: "1ラウンドは2つのステップ",
+    introDivineLi: "<strong>占い</strong>は、いくつかの小屋を選んで（ラウンドごとに選べる数が決まっているよ）水晶玉をのぞくこと。選んだ小屋ぜんぶの中に、グノームが合計何匹いるか（罠があればそれも含めて）教えてくれるけど、どの小屋にいるかまではわからないよ。",
+    introSearchLi: "<strong>つかまえる</strong>は、小屋を1軒選んで、実際につかまえに行くこと。中にグノームがいたら、その場ですぐつかまる。小屋が空っぽだったら、HPを1減らしてしまうよ。",
+    introAllowanceHeading: "1ラウンドで占える小屋の数",
+    introAllowanceLi: "1・2・4ラウンド目は、小屋を3軒選べるよ。3・5ラウンド目は、2軒選べるよ。6ラウンド目からは占いができなくなって、つかまえるだけになるよ。",
+    introWatchHeading: "気をつけること",
+    introCloakLi: "<strong>透明マント</strong>を使うと、グノーム1匹が一度だけ姿を消せるよ。そのラウンドだけ、水晶玉はそのグノームを数えないんだ。次のラウンドからは、ほかのグノームと同じようにまた占いで見つかるようになるよ。でも、マントを使っていてもいなくても、その子がいる小屋を選べば必ずつかまるよ。",
+    introTransferLi: "<strong>テレポートの力</strong>を使うと、グノーム1匹が一度だけ別の小屋にワープできるよ。もうつかまえたことのある小屋にもワープできるんだ。",
+    introTrapLi: "<strong>罠</strong>はグノームたちみんなで隠した仕掛けだから、特定の1匹のものじゃないよ。きみがつかまえるたびに、グノームたちは罠を新しい小屋に動かすか、そのままにしておくかを選ぶんだ。罠はグノームと同じ小屋に隠れていることもあるよ。罠がある小屋をつかまえると、いつものHPに加えてさらに2多くHPを失ってしまうよ。",
+    introWinHeading: "勝ち負けのルール",
+    introWinText: "HPがなくなる前に6匹全員をつかまえればきみの勝ち。先にHPが0になったらグノームたちの勝ちで、そのときは全員がどこに隠れていたか見られるよ。",
+    beginBtnLabel: "狩りをはじめる",
+
+    hutLabel: roomId => `小屋 ${roomId + 1}`,
+    phaseInvestigate: "占い",
+    phaseSearching: "つかまえ中",
+    phaseGameOver: "ゲーム終了",
+    selectedFraction: (selected, allowed) => `${selected} / ${allowed}`,
+    selectedFractionDash: allowed => `— / ${allowed}`,
+    caughtFraction: caught => `${caught} / 6`,
+
+    instructionsInvestigate: allowed => `小屋を${allowed}軒選んでまとめて占い、水晶玉で合計を見てみよう。`,
+    instructionsSearchNone: "このラウンドは占いなし。小屋を選んで、確認してつかまえよう。",
+    instructionsSearch: "つかまえる小屋を選んで、確認しよう。",
+    confirmSearchBtnLabel: "つかまえるのを確認 →",
+    continueBtnLabel: "つづける",
+    roundRecapHeading: round => `第${round}ラウンドのまとめ`,
+    viewFullLogBtnLabel: "記録をすべて見る",
+    closeBtnLabel: "閉じる",
+
+    resultWinTitle: "きみの勝ち！",
+    resultWinText: hp => `HPを${hp}残して、グノーム6匹を全員見つけたよ。`,
+    resultLoseTitle: "グノームたちの勝ち！",
+    resultLoseText: caught => `HPがなくなってしまった。見つけられたのは6匹中${caught}匹だけだったよ。`,
+
+    logNewGame: () => "新しいゲームが始まった。いたずらグノーム6匹がチェリーバレーの小屋に散らばっていった……",
+    logRoundBegins: round => `— 第${round}ラウンド開始 —`,
+    logInvestigationMain: (round, roomIds, sum) => `第${round}ラウンド：${roomIds.map(id => t("hutLabel", id)).join("、")}の水晶玉をのぞいた——合計${sum}個の魔法の気配を感じた。`,
+    logInvestigationEmpty: roomIds => `${roomIds.map(id => t("hutLabel", id)).join("、")}：完全に空っぽだと確認した。`,
+    logSearchHidersTrap: (roomId, count) => `${t("hutLabel", roomId)}をつかまえた——グノームを${count}匹見つけた！でも罠もそこに隠れていた——HP-2。`,
+    logSearchHidersNoTrap: (roomId, count) => `${t("hutLabel", roomId)}をつかまえた——グノームを${count}匹見つけた！HPは減らなかった。`,
+    logSearchCloakCaught: () => "その中には透明マントを持つグノームもいた！",
+    logSearchTransferCaught: () => "その中にはテレポートの力を持つグノームもいた！",
+    logSearchTrap: roomId => `${t("hutLabel", roomId)}をつかまえた——空っぽだったけど、罠がそこに隠れていた！HP-1（空っぽ分）とHP-2（罠分）で、合計HP-3。`,
+    logSearchEmpty: roomId => `${t("hutLabel", roomId)}をつかまえた——空っぽだった。HP-1。`,
+
+    revealInitialHeading: "最初の隠れ方",
+    revealHutCount: (roomId, count) => `${t("hutLabel", roomId)}：グノーム${count}匹`,
+    revealTrapStart: roomId => `罠は最初、${t("hutLabel", roomId)}に隠れていた。`,
+    neverCaughtHeading: "最後までつかまらなかったグノーム",
+    movedDesc: (startRoom, currentRoom, round) => `最初は${t("hutLabel", startRoom)}に隠れていて、第${round}ラウンドの始まりに${t("hutLabel", currentRoom)}へワープした`,
+    stayedDesc: startRoom => `ゲームの間ずっと${t("hutLabel", startRoom)}に隠れていた`,
+    itemNoteCloakActivated: round => ` 透明マントを持っていて、第${round}ラウンドの占いの時だけ姿を消した——それ以降のラウンドはずっと占いで見つかる状態だった。`,
+    itemNoteCloakNever: " 透明マントを持っていたけど、一度も使わなかった。",
+    itemNoteTransferUsed: " テレポートの力を持っていて、上に書いた通り使った。",
+    itemNoteTransferNever: " テレポートの力を持っていたけど、一度も使わなかった。",
+    neverCaughtLine: (letter, movement, currentRoom, itemNote) => `グノーム${letter}：${movement}——最後にいた場所：${t("hutLabel", currentRoom)}。${itemNote}`,
+
+    trapMovedDetail: (from, to) => `罠は${t("hutLabel", from)}から${t("hutLabel", to)}に動いた。`,
+    transferUsedMoveDetail: (letter, from, to) => `グノーム${letter}がテレポートの力を使った：${t("hutLabel", from)} → ${t("hutLabel", to)}。`,
+    cloakActivatedMoveDetail: letter => `グノーム${letter}が透明マントを使った。`,
+    noRoundsPlayed: "まだラウンドは行われていない",
+    roundLabel: (round, total) => `第${round}ラウンド / 全${total}ラウンド`,
+    beforeRoundHeading: "このラウンドが始まる前",
+    noMovements: "動きはなかった。",
+    divinationHeading: "占い",
+    divinationResultDetail: (roomIds, sum) => `${roomIds.map(id => t("hutLabel", id)).join("、")}の水晶玉をのぞいた——合計${sum}個の魔法の気配を感じた。`,
+    noDivinationThisRound: "このラウンドは占いなし——つかまえるだけ。",
+    searchHeading: "つかまえる",
+    searchCaughtDetail: (roomId, labels, count) => `${t("hutLabel", roomId)}をつかまえた——グノーム${labels}を見つけた！`,
+    itemHolderCloak: "透明マントの持ち主",
+    itemHolderTransfer: "テレポートの力の持ち主",
+    trapAlsoHiddenSuffix: " 罠もそこに隠れていた——HP-2。",
+    noHpLostSuffix: " HPは減らなかった。",
+    searchTrapDetail: roomId => `${t("hutLabel", roomId)}をつかまえた——空っぽだったけど、罠がそこに隠れていた！HP-1（空っぽ分）とHP-2（罠分）で、合計HP-3。`,
+    searchEmptyDetail: roomId => `${t("hutLabel", roomId)}をつかまえた——空っぽだった。HP-1。`,
+    trapTooltip: "罠",
+    gnomeTooltip: letter => `グノーム${letter}`,
+    legendNormalGnome: "グノーム",
+    legendCloakGhostedNote: "（このラウンドで透明マントを使うと点線のわくになるよ）",
+    legendBorderInvestigated: "占い済み",
+    legendBorderSearched: "つかまえ済み",
+  },
 };
 
 function t(key, ...args) {
@@ -231,7 +333,7 @@ function applyStaticTranslations() {
 }
 
 function setLang(lang) {
-  if (lang !== "en" && lang !== "zh") return;
+  if (lang !== "en" && lang !== "zh" && lang !== "ja") return;
   currentLang = lang;
   try { localStorage.setItem("sorcerersHuntLang", lang); } catch (e) { /* ignore unavailable storage */ }
   applyStaticTranslations();
@@ -1157,7 +1259,7 @@ function render() {
 document.addEventListener("DOMContentLoaded", () => {
   let savedLang = null;
   try { savedLang = localStorage.getItem("sorcerersHuntLang"); } catch (e) { /* ignore unavailable storage */ }
-  currentLang = savedLang === "zh" ? "zh" : "en";
+  currentLang = savedLang === "zh" ? "zh" : savedLang === "ja" ? "ja" : "en";
   applyStaticTranslations();
 
   document.querySelectorAll(".lang-btn").forEach(btn => {
