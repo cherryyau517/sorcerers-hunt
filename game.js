@@ -1,4 +1,3 @@
-
 "use strict";
 
 const NUM_ROOMS = 10;
@@ -582,7 +581,7 @@ function hiderAIReaction(state, rng) {
         const countMap = {};
         allOtherRooms.forEach(id => { countMap[id] = 0; });
         state.batches.forEach(b => b.roomIds.forEach(id => { if (id in countMap) countMap[id] += 1; }));
-        candidates = allOtherRooms.slice();
+        candidates = shuffle(allOtherRooms.slice(), rng);
         candidates.sort((a, b) => countMap[a] - countMap[b]);
         candidates = candidates.slice(0, 1);
       }
@@ -641,7 +640,9 @@ function simulatedCatcherStep(state, rng) {
     let best = null;
     let bestScore = -1;
     let bestTimesSearched = Infinity;
-    for (const r of pool) {
+    // Shuffled so ties don't always go to the lowest-numbered hut, which
+    // would teach the setup optimizer to hide gnomes in the highest ones.
+    for (const r of shuffle(pool.slice(), rng)) {
       let score = 0;
       for (const b of state.batches) {
         if (b.roomIds.includes(r.id)) score += b.sum / b.roomIds.length;
